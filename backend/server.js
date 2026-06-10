@@ -2,15 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { body, validationResult } = require('express-validator');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
+// Enhanced CORS for production
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://travel-agency-ten-jade.vercel.app'], // Add your Vercel URL later
+    credentials: true
+}));
 app.use(express.json());
 
 // Supabase initialization
@@ -19,27 +19,20 @@ const supabase = createClient(
     process.env.SUPABASE_ANON_KEY
 );
 
-// JWT Secret
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
-
-// Authentication Middleware
-const authenticateAdmin = async (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1];
-    
-    if (!token) {
-        return res.status(401).json({ error: 'Access denied. No token provided.' });
-    }
-    
+// Test endpoint
+app.get('/api/test', async (req, res) => {
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        req.admin = decoded;
-        next();
+        const { data, error } = await supabase
+            .from('packages')
+            .select('count')
+            .limit(1);
+        
+        if (error) throw error;
+        res.json({ message: 'Connected to Supabase!', success: true });
     } catch (error) {
-        return res.status(401).json({ error: 'Invalid token.' });
+        res.status(500).json({ error: error.message });
     }
-};
-
-// ============= PUBLIC ROUTES =============
+});
 
 // Get all packages
 app.get('/api/packages', async (req, res) => {
@@ -73,17 +66,7 @@ app.get('/api/packages/:id', async (req, res) => {
 });
 
 // Create booking
-app.post('/api/bookings', [
-    body('customer_name').notEmpty().trim(),
-    body('customer_email').isEmail(),
-    body('travel_date').isDate(),
-    body('package_id').isInt()
-], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-    
+app.post('/api/bookings', async (req, res) => {
     try {
         const { package_id, customer_name, customer_email, travel_date } = req.body;
         
@@ -106,16 +89,7 @@ app.post('/api/bookings', [
 });
 
 // Contact form
-app.post('/api/contact', [
-    body('name').notEmpty().trim(),
-    body('email').isEmail(),
-    body('message').notEmpty().trim()
-], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-    
+app.post('/api/contact', async (req, res) => {
     try {
         const { name, email, message } = req.body;
         
@@ -131,7 +105,10 @@ app.post('/api/contact', [
     }
 });
 
-// ============= ADMIN ROUTES =============
+// JWT Setup
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Admin login
 app.post('/api/admin/login', async (req, res) => {
@@ -165,7 +142,24 @@ app.post('/api/admin/login', async (req, res) => {
     }
 });
 
-// Get all packages (admin)
+// Middleware to authenticate admin
+const authenticateAdmin = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+        return res.status(401).json({ error: 'Access denied. No token provided.' });
+    }
+    
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.admin = decoded;
+        next();
+    } catch (error) {
+        return res.status(401).json({ error: 'Invalid token.' });
+    }
+};
+
+// Admin routes
 app.get('/api/admin/packages', authenticateAdmin, async (req, res) => {
     try {
         const { data, error } = await supabase
@@ -180,19 +174,7 @@ app.get('/api/admin/packages', authenticateAdmin, async (req, res) => {
     }
 });
 
-// Create package (admin)
-app.post('/api/admin/packages', authenticateAdmin, [
-    body('title').notEmpty().trim(),
-    body('destination').notEmpty().trim(),
-    body('description').notEmpty().trim(),
-    body('price').isFloat({ min: 0 }),
-    body('duration').isInt({ min: 1 })
-], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-    
+app.post('/api/admin/packages', authenticateAdmin, async (req, res) => {
     try {
         const { title, destination, description, price, duration, image_url } = req.body;
         
@@ -215,7 +197,6 @@ app.post('/api/admin/packages', authenticateAdmin, [
     }
 });
 
-// Update package (admin)
 app.put('/api/admin/packages/:id', authenticateAdmin, async (req, res) => {
     try {
         const { title, destination, description, price, duration, image_url } = req.body;
@@ -241,7 +222,6 @@ app.put('/api/admin/packages/:id', authenticateAdmin, async (req, res) => {
     }
 });
 
-// Delete package (admin)
 app.delete('/api/admin/packages/:id', authenticateAdmin, async (req, res) => {
     try {
         const { error } = await supabase
@@ -256,7 +236,6 @@ app.delete('/api/admin/packages/:id', authenticateAdmin, async (req, res) => {
     }
 });
 
-// Get all bookings (admin)
 app.get('/api/admin/bookings', authenticateAdmin, async (req, res) => {
     try {
         const { data, error } = await supabase
@@ -276,7 +255,6 @@ app.get('/api/admin/bookings', authenticateAdmin, async (req, res) => {
     }
 });
 
-// Update booking status (admin)
 app.put('/api/admin/bookings/:id', authenticateAdmin, async (req, res) => {
     try {
         const { status } = req.body;
@@ -294,7 +272,6 @@ app.put('/api/admin/bookings/:id', authenticateAdmin, async (req, res) => {
     }
 });
 
-// Delete booking (admin)
 app.delete('/api/admin/bookings/:id', authenticateAdmin, async (req, res) => {
     try {
         const { error } = await supabase
@@ -309,7 +286,6 @@ app.delete('/api/admin/bookings/:id', authenticateAdmin, async (req, res) => {
     }
 });
 
-// Get all contact messages (admin)
 app.get('/api/admin/messages', authenticateAdmin, async (req, res) => {
     try {
         const { data, error } = await supabase
@@ -327,4 +303,5 @@ app.get('/api/admin/messages', authenticateAdmin, async (req, res) => {
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    console.log(`Test API: http://localhost:${PORT}/api/test`);
 });
