@@ -8,9 +8,9 @@ const bcrypt = require('bcryptjs');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS configuration
+// CORS configuration - Allow all origins for Render deployment
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://travel-agency-ten-jade.vercel.app', 'http://localhost:5500', 'http://127.0.0.1:5500'],
+    origin: ['http://localhost:3000', 'https://travel-agency-ten-jade.vercel.app', '*'],
     credentials: true
 }));
 app.use(express.json());
@@ -398,9 +398,11 @@ app.get('/api/admin/stats', authenticateAdmin, async (req, res) => {
     }
 });
 
-// Start server
-app.listen(PORT, () => {
+// ========== START SERVER - CRITICAL FIX ==========
+// MUST bind to '0.0.0.0' for Render to detect the port
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📍 Bound to 0.0.0.0:${PORT}`);
     console.log(`📡 Test API: http://localhost:${PORT}/api/test`);
-    console.log(`🔐 Admin API: http://localhost:${PORT}/api/admin/login`);
+    console.log(`✅ Ready to accept connections`);
 });
