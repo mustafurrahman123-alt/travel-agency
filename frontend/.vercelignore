@@ -1,6 +1,5 @@
 node_modules/
 .git/
 README.md
-.gitignore
-*.log
-.DS_Store
+*.psd
+*.zip
