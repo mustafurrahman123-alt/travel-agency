@@ -406,3 +406,19 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`📡 Test API: http://localhost:${PORT}/api/test`);
     console.log(`✅ Ready to accept connections`);
 });
+// Add this near the top of your routes
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Travel Agency API',
+    status: 'online',
+    endpoints: {
+      test: '/api/test',
+      // Add your other endpoints here
+    }
+  });
+});
+
+// Your existing routes (like /api/test) go below
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API is working!' });
+});
