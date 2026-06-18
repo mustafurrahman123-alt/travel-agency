@@ -422,3 +422,22 @@ app.get('/', (req, res) => {
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working!' });
 });
+// Example: Get all destinations
+app.get('/api/destinations', (req, res) => {
+  res.json([
+    { id: 1, name: 'Paris', country: 'France' },
+    { id: 2, name: 'Tokyo', country: 'Japan' }
+  ]);
+});
+
+// Example: Get a specific destination
+app.get('/api/destinations/:id', (req, res) => {
+  const id = req.params.id;
+  res.json({ id, name: 'Destination ' + id });
+});
+
+// Example: Create a booking (POST)
+app.post('/api/bookings', (req, res) => {
+  // Handle booking logic
+  res.json({ message: 'Booking created!' });
+});
