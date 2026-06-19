@@ -41,3 +41,15 @@
     "url": "https://github.com/yourusername/travel-agency-backend.git"
   }
 }
+# 1. Show all files/folders at root
+ls -la
+
+# 2. Check if you have app/ or pages/ folder
+ls -la app 2>/dev/null || echo "No app folder"
+ls -la pages 2>/dev/null || echo "No pages folder"
+
+# 3. Show your next.config.js (if exists)
+cat next.config.js 2>/dev/null || echo "No next.config.js"
+
+# 4. Check for vercel.json (often causes routing issues)
+cat vercel.json 2>/dev/null || echo "No vercel.json"
