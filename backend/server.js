@@ -441,3 +441,28 @@ app.post('/api/bookings', (req, res) => {
   // Handle booking logic
   res.json({ message: 'Booking created!' });
 });
+// Sign Up
+app.post('/api/auth/signup', async (req, res) => {
+  const { email, password } = req.body;
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (error) return res.status(400).json({ error: error.message });
+  res.json({ user: data.user });
+});
+
+// Sign In
+app.post('/api/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) return res.status(400).json({ error: error.message });
+  res.json({ session: data.session });
+});
+
+// Protected Route Example
+app.get('/api/profile', async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'No token provided' });
+  
+  const { data: user, error } = await supabase.auth.getUser(token);
+  if (error) return res.status(401).json({ error: 'Invalid token' });
+  res.json({ user });
+});
