@@ -25,3 +25,12 @@
     "node": ">=14.0.0"
   }
 }
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Travel Agency API',
+    endpoints: {
+      test: '/api/test'
+      // list other endpoints here
+    }
+  });
+});
