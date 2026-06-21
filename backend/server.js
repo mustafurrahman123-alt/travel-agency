@@ -133,3 +133,6 @@ app.listen(PORT, () => {
   console.log(`📡 Test API: http://localhost:${PORT}/api/test`);
   console.log('✅ Ready to accept connections');
 });
+app.get('/', (req, res) => {
+  res.send('Travel Agency API is running 🚀');
+});
