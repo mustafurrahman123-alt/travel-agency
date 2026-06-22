@@ -72,7 +72,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
-
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to Travel Agency API! Use /health to check status.' });
+});
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
