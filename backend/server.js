@@ -1,138 +1,80 @@
+// Load environment variables
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const supabase = require('./database/connection');
+const { createClient } = require('@supabase/supabase-js');
 
-dotenv.config();
+// Initialize Supabase client
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY; // or SUPABASE_SERVICE_ROLE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_do_not_use';
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// ------------------- ADMIN AUTH -------------------
-// Login
-app.post('/api/admin/login', async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    // Query Supabase for admin user by username
-    const { data: user, error } = await supabase
-      .from('admins')
-      .select('*')
-      .eq('username', username)
-      .single();
-
-    if (error || !user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    // Compare password (hash stored in DB)
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    // Generate JWT
-    const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1d' });
-
-    res.json({ token, username: user.username });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
-  }
+// ------------------------------------------------------------
+// Example: Test JWT route (remove later)
+app.get('/test-jwt', (req, res) => {
+  const token = jwt.sign({ test: 'ok' }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  res.json({ token });
 });
 
-// Middleware to verify JWT
-const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  const token = authHeader.split(' ')[1];
+// ------------------------------------------------------------
+// Example: GET all records from a Supabase table (e.g., "flights")
+// Replace "flights" with your actual table name
+app.get('/api/flights', async (req, res) => {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.admin = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({ error: 'Invalid token' });
-  }
-};
-
-// ------------------- PROTECTED ROUTES -------------------
-// Get dashboard stats
-app.get('/api/admin/stats', verifyToken, async (req, res) => {
-  try {
-    // Example: count users, orders, revenue from Supabase
-    const { count: totalUsers, error: userErr } = await supabase
-      .from('users')
-      .select('*', { count: 'exact', head: true });
-
-    const { count: activeOrders, error: orderErr } = await supabase
-      .from('orders')
-      .select('*', { count: 'exact', head: true })
-      .eq('status', 'active');
-
-    // Revenue – sum of order totals (example)
-    const { data: revenueData, error: revErr } = await supabase
-      .from('orders')
-      .select('total');
-
-    let totalRevenue = 0;
-    if (revenueData) {
-      totalRevenue = revenueData.reduce((sum, order) => sum + order.total, 0);
-    }
-
-    res.json({
-      totalUsers: totalUsers || 0,
-      activeOrders: activeOrders || 0,
-      revenue: totalRevenue
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to fetch stats' });
-  }
-});
-
-// Get recent users
-app.get('/api/admin/users', verifyToken, async (req, res) => {
-  try {
-    const { data: users, error } = await supabase
-      .from('users')
-      .select('id, name, email, status')
-      .order('created_at', { ascending: false })
-      .limit(10);
+    const { data, error } = await supabase
+      .from('flights')
+      .select('*');
 
     if (error) throw error;
-    res.json(users || []);
+    res.json(data);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to fetch users' });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Logout (optional – just invalidate client-side)
-app.post('/api/admin/logout', verifyToken, (req, res) => {
-  res.json({ message: 'Logged out' });
+// ------------------------------------------------------------
+// Example: POST to insert a new booking
+app.post('/api/bookings', async (req, res) => {
+  const { user_id, flight_id, hotel_id, status } = req.body;
+  try {
+    const { data, error } = await supabase
+      .from('bookings')
+      .insert([{ user_id, flight_id, hotel_id, status }])
+      .select();
+
+    if (error) throw error;
+    res.status(201).json(data[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
-// ------------------- TEST ROUTE -------------------
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API test route works!' });
+// ------------------------------------------------------------
+// Health check (for Render)
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Travel Agency API is running 🚀' });
 });
 
-// ------------------- START SERVER -------------------
+// ------------------------------------------------------------
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
+
+// Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📍 Bound to 0.0.0.0:${PORT}`);
-  console.log(`📡 Test API: http://localhost:${PORT}/api/test`);
-  console.log('✅ Ready to accept connections');
-});
-app.get('/', (req, res) => {
-  res.send('Travel Agency API is running 🚀');
+  console.log(`✅ Connected to Supabase project: ${supabaseUrl}`);
 });
