@@ -6,34 +6,38 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { createClient } = require('@supabase/supabase-js');
 
-// Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY; // or SUPABASE_SERVICE_ROLE_KEY
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// ------------------------------------------------------------
-// Example: Test JWT route (remove later)
+// ---------- Routes ----------
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to Travel Agency API! Use /health to check status.' });
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Travel Agency API is running 🚀' });
+});
+
+// For Render's default health check (optional if you change the path)
+app.get('/api/test', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'API is healthy' });
+});
+
 app.get('/test-jwt', (req, res) => {
   const token = jwt.sign({ test: 'ok' }, process.env.JWT_SECRET, { expiresIn: '1h' });
   res.json({ token });
 });
 
-// ------------------------------------------------------------
-// Example: GET all records from a Supabase table (e.g., "flights")
-// Replace "flights" with your actual table name
 app.get('/api/flights', async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from('flights')
-      .select('*');
-
+    const { data, error } = await supabase.from('flights').select('*');
     if (error) throw error;
     res.json(data);
   } catch (err) {
@@ -42,8 +46,6 @@ app.get('/api/flights', async (req, res) => {
   }
 });
 
-// ------------------------------------------------------------
-// Example: POST to insert a new booking
 app.post('/api/bookings', async (req, res) => {
   const { user_id, flight_id, hotel_id, status } = req.body;
   try {
@@ -51,7 +53,6 @@ app.post('/api/bookings', async (req, res) => {
       .from('bookings')
       .insert([{ user_id, flight_id, hotel_id, status }])
       .select();
-
     if (error) throw error;
     res.status(201).json(data[0]);
   } catch (err) {
@@ -60,23 +61,19 @@ app.post('/api/bookings', async (req, res) => {
   }
 });
 
-// ------------------------------------------------------------
-// Health check (for Render)
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Travel Agency API is running 🚀' });
+// ---------- 404 handler (must come after all routes) ----------
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route not found' });
 });
 
-// ------------------------------------------------------------
-// Global error handler
+// ---------- Global error handler ----------
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Travel Agency API! Use /health to check status.' });
-});
-// Start server
+
+// ---------- Start server ----------
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`✅ Connected to Supabase project: ${supabaseUrl}`);
+  console.log(`✅ Connected to Supabase: ${supabaseUrl}`);
 });
