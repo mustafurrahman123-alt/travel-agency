@@ -1,22 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Agency</title>
-    <link rel="icon" href="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/1f3de.png">
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Agency - Book Your Dream Trip</title>
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <header style="text-align:center;padding:40px 20px;background:#0070f3;color:white;">
-        <h1>Welcome to Travel Agency</h1>
-        <p>Your dream vacation starts here</p>
-        <a href="admin-login.html" style="color:white;text-decoration:underline;">Admin Login</a>
+    <!-- Header / Navigation -->
+    <header>
+        <nav>
+            <div class="logo">✈️ Travel Agency</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="admin-login.html">Admin Login</a></li>
+            </ul>
+        </nav>
     </header>
-    <section style="padding:20px;text-align:center;">
-        <h2>Explore the world</h2>
-        <p>Book flights, hotels, and tours in one place.</p>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Explore the World with Us</h1>
+        <p>Find the best travel packages at unbeatable prices.</p>
+        <input type="text" placeholder="Search for destinations..." />
+        <button>Search</button>
     </section>
+
+    <!-- Popular Destinations -->
+    <section class="destinations">
+        <h2>Popular Destinations</h2>
+        <div class="card-grid">
+            <div class="card">🏝️ Bali</div>
+            <div class="card">🗽 New York</div>
+            <div class="card">🗼 Paris</div>
+            <div class="card">🏯 Tokyo</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Travel Agency. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript Files -->
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
 </body>
