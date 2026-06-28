@@ -1,5 +1,9 @@
+// BAD - Delete this if it exists
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "builds": [{ "src": "frontend/**", "use": "@vercel/static" }],
+  "outputDirectory": "."
+}
+// GOOD - Empty or just rewrites for SPA routing
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
