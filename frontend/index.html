@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>✈️ Travel Agency</title>
   <style>
-    /* ---------- Reset & Base ---------- */
+    /* ---------- Reset & Base (same as before) ---------- */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: #f8faff;
@@ -21,7 +20,6 @@
       display: flex;
       flex-direction: column;
     }
-
     a {
       text-decoration: none;
       color: inherit;
@@ -44,7 +42,6 @@
       flex-wrap: wrap;
       gap: 0.5rem;
     }
-
     .brand {
       font-size: 1.5rem;
       font-weight: 700;
@@ -61,14 +58,12 @@
       -webkit-text-fill-color: initial;
       color: #f39c12;
     }
-
     .header-actions {
       display: flex;
       align-items: center;
       gap: 0.6rem;
       flex-wrap: wrap;
     }
-
     .header-btn {
       background: transparent;
       border: none;
@@ -296,16 +291,8 @@
     .footer span {
       color: #f39c12;
     }
-    .footer a {
-      color: #8bc4d0;
-      transition: color 0.2s ease;
-    }
-    .footer a:hover {
-      color: #f39c12;
-      text-decoration: underline;
-    }
 
-    /* ---------- MODALS ---------- */
+    /* ---------- MODALS (general) ---------- */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -440,67 +427,195 @@
       border-radius: 12px;
     }
 
-    /* ---------- Booking list in modal ---------- */
-    .booking-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    /* ---------- Admin Dashboard (fullscreen overlay) ---------- */
+    #adminDashboard {
+      position: fixed;
+      inset: 0;
+      background: #f0f4f8;
+      z-index: 2000;
+      overflow-y: auto;
+      padding: 2rem;
+      display: none;
+      flex-direction: column;
     }
-    .booking-list li {
-      background: #f8faff;
-      border-radius: 14px;
-      padding: 0.8rem 1rem;
-      margin-bottom: 0.7rem;
-      border-left: 4px solid #2b7a8a;
+    #adminDashboard.active {
+      display: flex;
+    }
+    .admin-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 2rem;
       flex-wrap: wrap;
-      gap: 0.3rem;
+      gap: 1rem;
     }
-    .booking-list .dest {
+    .admin-header h1 {
+      font-size: 2rem;
+      color: #0b3b5c;
+    }
+    .admin-header .close-admin {
+      background: #c0392b;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .admin-header .close-admin:hover {
+      background: #e74c3c;
+      transform: scale(1.02);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      text-align: center;
+    }
+    .stat-card .number {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #0b3b5c;
+    }
+    .stat-card .label {
+      color: #4a5b6e;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .admin-section {
+      background: white;
+      border-radius: 24px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+    .admin-section h2 {
+      font-size: 1.5rem;
+      color: #0b3b5c;
+      margin-bottom: 1rem;
+    }
+    .admin-section .sub {
+      color: #4a5b6e;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    /* chart container */
+    .chart-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    #bookingChart {
+      width: 100%;
+      height: 250px;
+      background: #fafcff;
+      border-radius: 16px;
+    }
+
+    /* table */
+    .table-wrap {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    table th {
+      background: #f1f5f9;
+      text-align: left;
+      padding: 0.8rem 0.6rem;
       font-weight: 600;
       color: #0b3b5c;
     }
-    .booking-list .meta {
-      font-size: 0.85rem;
-      color: #4a5b6e;
+    table td {
+      padding: 0.7rem 0.6rem;
+      border-bottom: 1px solid #edf2f7;
     }
-    .empty-bookings {
-      text-align: center;
-      color: #94a3b8;
-      padding: 2rem 0;
+    table tr:hover td {
+      background: #f8faff;
+    }
+
+    /* destination list */
+    .dest-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .dest-item {
+      background: #f8faff;
+      border-radius: 40px;
+      padding: 0.4rem 1rem 0.4rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid #e2e8f0;
+    }
+    .dest-item .icon {
+      font-size: 1.4rem;
+    }
+    .dest-item .info {
+      font-weight: 500;
+    }
+    .dest-item .del-btn {
+      background: none;
+      border: none;
+      color: #c0392b;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0 0.2rem;
+    }
+    .dest-item .del-btn:hover {
+      color: #e74c3c;
+      transform: scale(1.2);
+    }
+
+    .add-dest-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: flex-end;
+      margin-top: 1rem;
+    }
+    .add-dest-form .form-group {
+      margin-bottom: 0;
+      flex: 1 1 150px;
+    }
+    .add-dest-form .form-group input {
+      padding: 0.6rem 0.8rem;
+      border-radius: 12px;
+    }
+    .add-dest-form .submit-btn {
+      flex: 0 0 auto;
+      padding: 0.6rem 1.5rem;
+      margin-top: 0;
+      width: auto;
     }
 
     /* ---------- Responsive ---------- */
     @media (max-width: 768px) {
-      .header {
-        padding: 0.6rem 1.2rem;
-      }
-      .brand {
-        font-size: 1.3rem;
-      }
-      .header-actions {
-        gap: 0.3rem;
-      }
-      .header-btn {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.7rem;
-      }
-      .hero {
-        padding: 3rem 1.5rem;
-      }
-      .hero h1 {
-        font-size: 2.2rem;
-      }
-      .hero p {
-        font-size: 1rem;
-      }
+      .header { padding: 0.6rem 1.2rem; }
+      .brand { font-size: 1.3rem; }
+      .hero { padding: 3rem 1.5rem; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero p { font-size: 1rem; }
       .search-wrapper {
         flex-direction: column;
         border-radius: 30px;
         background: white;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
       }
       .search-wrapper input {
         padding: 1rem 1.5rem;
@@ -514,27 +629,16 @@
         padding: 1rem;
         width: 100%;
       }
-      .destinations-section {
-        padding: 2rem 1.2rem 1.5rem;
-      }
-      .destinations-section h2 {
-        font-size: 1.8rem;
-      }
-      .destinations-grid {
-        gap: 1.2rem;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      }
-      .modal-box {
-        padding: 1.5rem;
-      }
+      .destinations-section { padding: 2rem 1.2rem; }
+      .destinations-grid { gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+      #adminDashboard { padding: 1rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .add-dest-form { flex-direction: column; align-items: stretch; }
+      .add-dest-form .submit-btn { width: 100%; }
     }
     @media (max-width: 480px) {
-      .hero h1 {
-        font-size: 1.8rem;
-      }
-      .destinations-grid {
-        grid-template-columns: 1fr 1fr;
-      }
+      .hero h1 { font-size: 1.8rem; }
+      .destinations-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -564,57 +668,30 @@
     </div>
   </section>
 
-  <!-- ========== DESTINATIONS ========== -->
+  <!-- ========== DESTINATIONS (dynamic) ========== -->
   <section class="destinations-section">
     <h2>Popular Destinations</h2>
-    <div class="destinations-grid">
-      <div class="destination-card" data-dest="Bali" data-price="899">
-        <span class="destination-icon">🏝️</span>
-        <h3>Bali</h3>
-        <p class="location">Indonesia</p>
-        <span class="price-badge">$899</span>
-        <button class="book-btn" data-dest="Bali" data-price="899">Book Now</button>
-      </div>
-      <div class="destination-card" data-dest="New York" data-price="1249">
-        <span class="destination-icon">🗽</span>
-        <h3>New York</h3>
-        <p class="location">USA</p>
-        <span class="price-badge">$1,249</span>
-        <button class="book-btn" data-dest="New York" data-price="1249">Book Now</button>
-      </div>
-      <div class="destination-card" data-dest="Paris" data-price="1099">
-        <span class="destination-icon">🗼</span>
-        <h3>Paris</h3>
-        <p class="location">France</p>
-        <span class="price-badge">$1,099</span>
-        <button class="book-btn" data-dest="Paris" data-price="1099">Book Now</button>
-      </div>
-      <div class="destination-card" data-dest="Tokyo" data-price="1399">
-        <span class="destination-icon">🏯</span>
-        <h3>Tokyo</h3>
-        <p class="location">Japan</p>
-        <span class="price-badge">$1,399</span>
-        <button class="book-btn" data-dest="Tokyo" data-price="1399">Book Now</button>
-      </div>
+    <div class="destinations-grid" id="destinationsGrid">
+      <!-- Rendered by JavaScript -->
     </div>
   </section>
 
   <!-- ========== FOOTER ========== -->
   <footer class="footer">
     <p>© 2025 <span>Travel Agency</span>. All rights reserved.</p>
-    <p style="margin-top: 0.4rem; font-size: 0.85rem; opacity: 0.6;">✨ Designed with <a href="#">✈️ wanderlust</a></p>
+    <p style="margin-top: 0.4rem; font-size: 0.85rem; opacity: 0.6;">✨ Designed with ✈️ wanderlust</p>
   </footer>
 
   <!-- ============================================================ -->
   <!-- ======================== MODALS ============================= -->
   <!-- ============================================================ -->
 
-  <!-- ---------- LOGIN MODAL ---------- -->
+  <!-- Login Modal -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
       <button class="modal-close" id="closeLoginModal">&times;</button>
       <h2>🔐 Login</h2>
-      <p class="subtitle">Welcome back! Sign in to manage your bookings.</p>
+      <p class="subtitle">Welcome back!</p>
       <form id="loginForm">
         <div class="form-group">
           <label for="loginEmail">Email</label>
@@ -628,17 +705,17 @@
         <div class="auth-switch">
           Don't have an account? <button type="button" id="switchToRegister">Register</button>
         </div>
-        <div class="demo-note">Demo: any registered email works (no real validation)</div>
+        <div class="demo-note">Demo: any registered email works</div>
       </form>
     </div>
   </div>
 
-  <!-- ---------- REGISTER MODAL ---------- -->
+  <!-- Register Modal -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-box">
       <button class="modal-close" id="closeRegisterModal">&times;</button>
       <h2>📝 Register</h2>
-      <p class="subtitle">Create your account to book trips and save history.</p>
+      <p class="subtitle">Create your account.</p>
       <form id="registerForm">
         <div class="form-group">
           <label for="regName">Full Name</label>
@@ -660,12 +737,12 @@
         <div class="auth-switch">
           Already a member? <button type="button" id="switchToLogin">Login</button>
         </div>
-        <div class="demo-note">Passwords are stored in your browser (localStorage).</div>
+        <div class="demo-note">Passwords stored in localStorage.</div>
       </form>
     </div>
   </div>
 
-  <!-- ---------- BOOKING MODAL (with Payment) ---------- -->
+  <!-- Booking Modal (with payment) -->
   <div class="modal-overlay" id="bookingModal">
     <div class="modal-box">
       <button class="modal-close" id="closeBookingModal">&times;</button>
@@ -695,8 +772,6 @@
             <option value="6+">6+</option>
           </select>
         </div>
-
-        <!-- Payment section -->
         <hr style="margin: 1.2rem 0; border: none; border-top: 2px dashed #e2e8f0;" />
         <h3 style="font-size: 1.1rem; color: #0b3b5c; margin-bottom: 0.8rem;">💳 Payment Details</h3>
         <div class="form-group">
@@ -717,32 +792,30 @@
             <input type="text" id="cardCvv" placeholder="123" required maxlength="4" />
           </div>
         </div>
-
         <button type="submit" class="submit-btn">✅ Confirm & Pay</button>
-        <div class="demo-note">🔒 Demo payment – no real charge will be made.</div>
+        <div class="demo-note">🔒 Demo payment – no real charge.</div>
       </form>
     </div>
   </div>
 
-  <!-- ---------- MY BOOKINGS MODAL ---------- -->
+  <!-- My Bookings Modal -->
   <div class="modal-overlay" id="bookingsModal">
     <div class="modal-box">
       <button class="modal-close" id="closeBookingsModal">&times;</button>
       <h2>📋 My Bookings</h2>
       <p class="subtitle" id="bookingsUserEmail">Your travel history</p>
       <div id="bookingsListContainer">
-        <!-- dynamically filled -->
         <div class="empty-bookings">No bookings yet. Start your adventure! ✈️</div>
       </div>
     </div>
   </div>
 
-  <!-- ---------- ADMIN MODAL (kept from earlier) ---------- -->
+  <!-- Admin Login Modal -->
   <div class="modal-overlay" id="adminModal">
     <div class="modal-box">
       <button class="modal-close" id="closeAdminModal">&times;</button>
       <h2>🔐 Admin Login</h2>
-      <p class="subtitle">Manage packages (demo).</p>
+      <p class="subtitle">Access the admin dashboard.</p>
       <form id="adminForm">
         <div class="form-group">
           <label for="adminUser">Username</label>
@@ -759,14 +832,114 @@
   </div>
 
   <!-- ============================================================ -->
+  <!-- =============== ADMIN DASHBOARD (fullscreen) =============== -->
+  <!-- ============================================================ -->
+  <div id="adminDashboard">
+    <div class="admin-header">
+      <h1>📊 Admin Dashboard</h1>
+      <button class="close-admin" id="closeAdminDashboard">✕ Close Dashboard</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="number" id="statUsers">0</div><div class="label">Users</div></div>
+      <div class="stat-card"><div class="number" id="statBookings">0</div><div class="label">Bookings</div></div>
+      <div class="stat-card"><div class="number" id="statDestinations">0</div><div class="label">Destinations</div></div>
+      <div class="stat-card"><div class="number" id="statRevenue">$0</div><div class="label">Total Revenue</div></div>
+    </div>
+
+    <!-- Chart -->
+    <div class="admin-section">
+      <h2>📈 Bookings per Destination</h2>
+      <div class="chart-container">
+        <canvas id="bookingChart" width="600" height="250"></canvas>
+      </div>
+    </div>
+
+    <!-- Bookings Table -->
+    <div class="admin-section">
+      <h2>📋 All Bookings</h2>
+      <div class="table-wrap">
+        <table id="bookingsTable">
+          <thead>
+            <tr><th>Destination</th><th>Price</th><th>Date</th><th>Guests</th><th>User</th><th>Booked At</th></tr>
+          </thead>
+          <tbody id="bookingsTableBody">
+            <!-- dynamic -->
+          </tbody>
+        </table>
+      </div>
+      <div id="noBookingsMsg" style="text-align:center; color:#94a3b8; padding:1rem;">No bookings yet.</div>
+    </div>
+
+    <!-- Manage Destinations -->
+    <div class="admin-section">
+      <h2>🗺️ Manage Destinations</h2>
+      <div class="sub">Add a new destination or delete existing ones.</div>
+      <form class="add-dest-form" id="addDestForm">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="destName" placeholder="e.g. Maldives" required />
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="destLocation" placeholder="e.g. Indian Ocean" required />
+        </div>
+        <div class="form-group">
+          <label>Price ($)</label>
+          <input type="number" id="destPrice" placeholder="1200" required min="1" />
+        </div>
+        <div class="form-group">
+          <label>Emoji</label>
+          <input type="text" id="destEmoji" placeholder="🌴" required maxlength="2" />
+        </div>
+        <button type="submit" class="submit-btn">➕ Add Destination</button>
+      </form>
+      <div class="dest-list" id="destList">
+        <!-- dynamic -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
   <!-- ======================== JAVASCRIPT ========================= -->
   <!-- ============================================================ -->
   <script>
     (function() {
       'use strict';
 
+      // -------- Data helpers (localStorage) --------
+      function getUsers() {
+        return JSON.parse(localStorage.getItem('users')) || {};
+      }
+      function saveUsers(users) {
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+      function getBookings() {
+        return JSON.parse(localStorage.getItem('bookings')) || [];
+      }
+      function saveBookings(bookings) {
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+      }
+      function getDestinations() {
+        const data = JSON.parse(localStorage.getItem('destinations'));
+        if (data && data.length) return data;
+        // default destinations
+        const defaults = [
+          { id: 1, name: 'Bali', location: 'Indonesia', price: 899, emoji: '🏝️' },
+          { id: 2, name: 'New York', location: 'USA', price: 1249, emoji: '🗽' },
+          { id: 3, name: 'Paris', location: 'France', price: 1099, emoji: '🗼' },
+          { id: 4, name: 'Tokyo', location: 'Japan', price: 1399, emoji: '🏯' },
+        ];
+        localStorage.setItem('destinations', JSON.stringify(defaults));
+        return defaults;
+      }
+      function saveDestinations(dests) {
+        localStorage.setItem('destinations', JSON.stringify(dests));
+      }
+
       // -------- State --------
-      let currentUser = null; // will store email
+      let currentUser = null; // email
 
       // -------- DOM refs --------
       const loginModal = document.getElementById('loginModal');
@@ -774,12 +947,14 @@
       const bookingModal = document.getElementById('bookingModal');
       const bookingsModal = document.getElementById('bookingsModal');
       const adminModal = document.getElementById('adminModal');
+      const adminDashboard = document.getElementById('adminDashboard');
 
       const closeLogin = document.getElementById('closeLoginModal');
       const closeRegister = document.getElementById('closeRegisterModal');
       const closeBooking = document.getElementById('closeBookingModal');
       const closeBookings = document.getElementById('closeBookingsModal');
       const closeAdmin = document.getElementById('closeAdminModal');
+      const closeAdminDashboard = document.getElementById('closeAdminDashboard');
 
       const loginBtn = document.getElementById('loginBtn');
       const registerBtn = document.getElementById('registerBtn');
@@ -791,40 +966,46 @@
       const registerForm = document.getElementById('registerForm');
       const bookingForm = document.getElementById('bookingForm');
       const adminForm = document.getElementById('adminForm');
+      const addDestForm = document.getElementById('addDestForm');
 
       const switchToRegister = document.getElementById('switchToRegister');
       const switchToLogin = document.getElementById('switchToLogin');
 
-      const bookingDestDisplay = document.getElementById('bookingDestDisplay');
-      const bookingPriceDisplay = document.getElementById('bookingPriceDisplay');
+      const destinationsGrid = document.getElementById('destinationsGrid');
       const bookingsListContainer = document.getElementById('bookingsListContainer');
       const bookingsUserEmail = document.getElementById('bookingsUserEmail');
+      const bookingsTableBody = document.getElementById('bookingsTableBody');
+      const noBookingsMsg = document.getElementById('noBookingsMsg');
+      const destList = document.getElementById('destList');
 
-      // -------- Helpers --------
+      const statUsers = document.getElementById('statUsers');
+      const statBookings = document.getElementById('statBookings');
+      const statDestinations = document.getElementById('statDestinations');
+      const statRevenue = document.getElementById('statRevenue');
+      const chartCanvas = document.getElementById('bookingChart');
+
+      // -------- Modal helpers --------
       function openModal(modal) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
       }
-
       function closeModal(modal) {
         modal.classList.remove('active');
         document.body.style.overflow = '';
       }
-
       function closeAllModals() {
         [loginModal, registerModal, bookingModal, bookingsModal, adminModal].forEach(closeModal);
       }
 
-      // -------- User persistence --------
+      // -------- User management --------
       function loadUser() {
         const saved = localStorage.getItem('currentUser');
         if (saved) {
           currentUser = saved;
-          updateUIForUser();
         } else {
           currentUser = null;
-          updateUIForUser();
         }
+        updateUIForUser();
       }
 
       function saveUser(email) {
@@ -846,7 +1027,6 @@
                                   <button class="header-btn danger" id="logoutBtn">Logout</button>`;
           const logoutBtn = document.getElementById('logoutBtn');
           if (logoutBtn) logoutBtn.addEventListener('click', logoutUser);
-          // hide login/register buttons
           loginBtn.style.display = 'none';
           registerBtn.style.display = 'none';
           myBookingsBtn.style.display = 'inline-block';
@@ -854,17 +1034,8 @@
           userStatus.innerHTML = '';
           loginBtn.style.display = 'inline-block';
           registerBtn.style.display = 'inline-block';
-          myBookingsBtn.style.display = 'inline-block'; // still visible but shows empty
+          myBookingsBtn.style.display = 'inline-block';
         }
-      }
-
-      // -------- Users DB (localStorage) --------
-      function getUsers() {
-        return JSON.parse(localStorage.getItem('users')) || {};
-      }
-
-      function saveUsers(users) {
-        localStorage.setItem('users', JSON.stringify(users));
       }
 
       function registerUser(name, email, password) {
@@ -888,21 +1059,47 @@
         return false;
       }
 
-      // -------- Bookings DB (localStorage) --------
-      function getBookings() {
-        return JSON.parse(localStorage.getItem('bookings')) || [];
+      // -------- Destination rendering (main page) --------
+      function renderDestinations() {
+        const dests = getDestinations();
+        if (dests.length === 0) {
+          destinationsGrid.innerHTML = '<p style="text-align:center; color:#94a3b8;">No destinations available. Admin can add some.</p>';
+          return;
+        }
+        let html = '';
+        dests.forEach(d => {
+          html += `
+            <div class="destination-card" data-dest="${d.name}" data-price="${d.price}">
+              <span class="destination-icon">${d.emoji || '🏝️'}</span>
+              <h3>${d.name}</h3>
+              <p class="location">${d.location}</p>
+              <span class="price-badge">$${d.price}</span>
+              <button class="book-btn" data-dest="${d.name}" data-price="${d.price}">Book Now</button>
+            </div>
+          `;
+        });
+        destinationsGrid.innerHTML = html;
+        // reattach booking button events
+        document.querySelectorAll('.book-btn').forEach(btn => {
+          btn.removeEventListener('click', bookingClickHandler);
+          btn.addEventListener('click', bookingClickHandler);
+        });
       }
 
-      function saveBookings(bookings) {
-        localStorage.setItem('bookings', JSON.stringify(bookings));
+      function bookingClickHandler(e) {
+        e.stopPropagation();
+        const dest = this.dataset.dest;
+        const price = this.dataset.price;
+        openBookingFor(dest, price);
       }
 
+      // -------- Booking functions --------
       function addBooking(destination, price, date, guests, name, email) {
         const bookings = getBookings();
         bookings.push({
           id: Date.now(),
           destination,
-          price,
+          price: parseInt(price),
           date,
           guests,
           name,
@@ -917,8 +1114,27 @@
         return all.filter(b => b.email === email);
       }
 
+      function openBookingFor(dest, price) {
+        if (!currentUser) {
+          alert('🔐 Please login or register to book a trip.');
+          return;
+        }
+        document.getElementById('bookEmail').value = currentUser;
+        document.getElementById('bookFullName').value = '';
+        document.getElementById('bookDate').value = '';
+        document.getElementById('bookGuests').value = '2';
+        document.getElementById('cardName').value = '';
+        document.getElementById('cardNumber').value = '';
+        document.getElementById('cardExpiry').value = '';
+        document.getElementById('cardCvv').value = '';
+        bookingDestDisplay.innerHTML = `Destination: <strong>${dest}</strong> — <span id="bookingPriceDisplay">$${price}</span>`;
+        bookingForm.dataset.dest = dest;
+        bookingForm.dataset.price = price;
+        openModal(bookingModal);
+      }
+
       // -------- Render My Bookings --------
-      function renderBookings() {
+      function renderMyBookings() {
         if (!currentUser) {
           bookingsListContainer.innerHTML = `<div class="empty-bookings">Please login to view your bookings.</div>`;
           bookingsUserEmail.textContent = 'Not logged in';
@@ -942,47 +1158,183 @@
         bookingsListContainer.innerHTML = html;
       }
 
-      // -------- Booking modal pre-fill --------
-      function openBookingFor(dest, price) {
-        if (!currentUser) {
-          alert('🔐 Please login or register to book a trip.');
+      // -------- Admin Dashboard functions --------
+      function updateStats() {
+        const users = Object.keys(getUsers()).length;
+        const bookings = getBookings();
+        const dests = getDestinations();
+        const totalRevenue = bookings.reduce((sum, b) => sum + (b.price || 0), 0);
+        statUsers.textContent = users;
+        statBookings.textContent = bookings.length;
+        statDestinations.textContent = dests.length;
+        statRevenue.textContent = `$${totalRevenue}`;
+      }
+
+      function renderBookingsTable() {
+        const bookings = getBookings();
+        const tbody = bookingsTableBody;
+        if (bookings.length === 0) {
+          noBookingsMsg.style.display = 'block';
+          tbody.innerHTML = '';
           return;
         }
-        // pre-fill email
-        document.getElementById('bookEmail').value = currentUser;
-        document.getElementById('bookFullName').value = '';
-        document.getElementById('bookDate').value = '';
-        document.getElementById('bookGuests').value = '2';
-        document.getElementById('cardName').value = '';
-        document.getElementById('cardNumber').value = '';
-        document.getElementById('cardExpiry').value = '';
-        document.getElementById('cardCvv').value = '';
-        bookingDestDisplay.innerHTML = `Destination: <strong>${dest}</strong> — <span id="bookingPriceDisplay">$${price}</span>`;
-        // store dest & price in data attributes for submission
-        bookingForm.dataset.dest = dest;
-        bookingForm.dataset.price = price;
-        openModal(bookingModal);
+        noBookingsMsg.style.display = 'none';
+        let html = '';
+        bookings.forEach(b => {
+          html += `<tr>
+            <td>${b.destination}</td>
+            <td>$${b.price}</td>
+            <td>${b.date}</td>
+            <td>${b.guests}</td>
+            <td>${b.email}</td>
+            <td>${b.bookedAt}</td>
+          </tr>`;
+        });
+        tbody.innerHTML = html;
+      }
+
+      function renderDestList() {
+        const dests = getDestinations();
+        if (dests.length === 0) {
+          destList.innerHTML = '<p style="color:#94a3b8;">No destinations. Add one above.</p>';
+          return;
+        }
+        let html = '';
+        dests.forEach(d => {
+          html += `
+            <div class="dest-item">
+              <span class="icon">${d.emoji || '🏝️'}</span>
+              <span class="info">${d.name} ($${d.price})</span>
+              <button class="del-btn" data-id="${d.id}">✕</button>
+            </div>
+          `;
+        });
+        destList.innerHTML = html;
+        // attach delete events
+        destList.querySelectorAll('.del-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const id = parseInt(this.dataset.id);
+            if (confirm('Delete this destination?')) {
+              let dests = getDestinations();
+              dests = dests.filter(d => d.id !== id);
+              saveDestinations(dests);
+              renderDestList();
+              renderDestinations(); // refresh main page
+              updateStats();
+              drawChart();
+            }
+          });
+        });
+      }
+
+      function drawChart() {
+        const bookings = getBookings();
+        const ctx = chartCanvas.getContext('2d');
+        const width = chartCanvas.width;
+        const height = chartCanvas.height;
+        ctx.clearRect(0, 0, width, height);
+
+        // group by destination
+        const groups = {};
+        bookings.forEach(b => {
+          groups[b.destination] = (groups[b.destination] || 0) + 1;
+        });
+        const labels = Object.keys(groups);
+        const values = Object.values(groups);
+        if (labels.length === 0) {
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = '16px Segoe UI';
+          ctx.textAlign = 'center';
+          ctx.fillText('No bookings data', width/2, height/2);
+          return;
+        }
+
+        const maxVal = Math.max(...values, 1);
+        const padding = 40;
+        const chartWidth = width - padding * 2;
+        const chartHeight = height - padding * 2;
+        const barWidth = Math.min(60, chartWidth / labels.length * 0.6);
+        const gap = (chartWidth - barWidth * labels.length) / (labels.length + 1);
+
+        ctx.font = '12px Segoe UI';
+        ctx.textAlign = 'center';
+        labels.forEach((label, i) => {
+          const x = padding + gap + i * (barWidth + gap);
+          const barHeight = (values[i] / maxVal) * chartHeight;
+          const y = padding + chartHeight - barHeight;
+
+          // bar
+          ctx.fillStyle = '#2b7a8a';
+          ctx.beginPath();
+          ctx.roundRect(x, y, barWidth, barHeight, 4);
+          ctx.fill();
+
+          // value on top
+          ctx.fillStyle = '#0b3b5c';
+          ctx.font = 'bold 14px Segoe UI';
+          ctx.fillText(values[i], x + barWidth/2, y - 6);
+
+          // label
+          ctx.fillStyle = '#1e2a3a';
+          ctx.font = '12px Segoe UI';
+          ctx.fillText(label, x + barWidth/2, padding + chartHeight + 18);
+        });
+      }
+
+      // Helper for rounded rect
+      CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+        if (w < 2 * r) r = w / 2;
+        if (h < 2 * r) r = h / 2;
+        this.moveTo(x + r, y);
+        this.lineTo(x + w - r, y);
+        this.quadraticCurveTo(x + w, y, x + w, y + r);
+        this.lineTo(x + w, y + h - r);
+        this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        this.lineTo(x + r, y + h);
+        this.quadraticCurveTo(x, y + h, x, y + h - r);
+        this.lineTo(x, y + r);
+        this.quadraticCurveTo(x, y, x + r, y);
+        this.closePath();
+        return this;
+      };
+
+      function refreshAdminDashboard() {
+        updateStats();
+        renderBookingsTable();
+        renderDestList();
+        drawChart();
+      }
+
+      function openAdminDashboard() {
+        adminDashboard.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        refreshAdminDashboard();
+      }
+
+      function closeAdminDashboardFn() {
+        adminDashboard.classList.remove('active');
+        document.body.style.overflow = '';
       }
 
       // -------- Event listeners --------
-      // Login
+
+      // Login / Register switches
       loginBtn.addEventListener('click', () => {
         document.getElementById('loginEmail').value = '';
         document.getElementById('loginPassword').value = '';
         openModal(loginModal);
       });
       closeLogin.addEventListener('click', () => closeModal(loginModal));
-
       loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value.trim();
         const pass = document.getElementById('loginPassword').value.trim();
         if (loginUser(email, pass)) {
           closeModal(loginModal);
+          renderDestinations(); // refresh booking buttons
         }
       });
 
-      // Register
       registerBtn.addEventListener('click', () => {
         document.getElementById('regName').value = '';
         document.getElementById('regEmail').value = '';
@@ -991,7 +1343,6 @@
         openModal(registerModal);
       });
       closeRegister.addEventListener('click', () => closeModal(registerModal));
-
       registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('regName').value.trim();
@@ -1009,14 +1360,12 @@
         if (registerUser(name, email, pass)) {
           alert('✅ Registration successful! Please login.');
           closeModal(registerModal);
-          // switch to login
           openModal(loginModal);
           document.getElementById('loginEmail').value = email;
           document.getElementById('loginPassword').value = '';
         }
       });
 
-      // Switch between login / register
       switchToRegister.addEventListener('click', () => {
         closeModal(loginModal);
         openModal(registerModal);
@@ -1026,18 +1375,8 @@
         openModal(loginModal);
       });
 
-      // Booking buttons
-      document.querySelectorAll('.book-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const dest = this.dataset.dest;
-          const price = this.dataset.price;
-          openBookingFor(dest, price);
-        });
-      });
-
+      // Booking form
       closeBooking.addEventListener('click', () => closeModal(bookingModal));
-
       bookingForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const dest = bookingForm.dataset.dest;
@@ -1055,8 +1394,6 @@
           alert('Please fill in all fields (including payment).');
           return;
         }
-
-        // Simple card validation (just for demo)
         if (cardNumber.replace(/\s/g, '').length < 13) {
           alert('Please enter a valid card number (at least 13 digits).');
           return;
@@ -1066,10 +1403,11 @@
           return;
         }
 
-        // Save booking
         addBooking(dest, price, date, guests, name, email);
         alert(`✅ Booking confirmed for ${dest}!\n\n👤 ${name}\n📧 ${email}\n📅 ${date}\n👥 ${guests} guests\n💳 Payment demo successful.\n\n✈️ Thank you!`);
         closeModal(bookingModal);
+        // refresh dashboard if open
+        if (adminDashboard.classList.contains('active')) refreshAdminDashboard();
       });
 
       // My Bookings
@@ -1078,44 +1416,60 @@
           alert('🔐 Please login to view your bookings.');
           return;
         }
-        renderBookings();
+        renderMyBookings();
         openModal(bookingsModal);
       });
       closeBookings.addEventListener('click', () => closeModal(bookingsModal));
 
-      // Admin
+      // Admin login
       adminLoginBtn.addEventListener('click', () => {
         document.getElementById('adminUser').value = '';
         document.getElementById('adminPass').value = '';
         openModal(adminModal);
       });
       closeAdmin.addEventListener('click', () => closeModal(adminModal));
-
       adminForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const user = document.getElementById('adminUser').value.trim();
         const pass = document.getElementById('adminPass').value.trim();
         if (user === 'admin' && pass === 'password') {
-          alert('🔓 Welcome, Admin! (Demo)');
           closeModal(adminModal);
+          openAdminDashboard();
         } else {
           alert('❌ Invalid credentials. Try: admin / password');
         }
       });
 
-      // Close modals on overlay click
-      document.querySelectorAll('.modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', function(e) {
-          if (e.target === this) closeModal(this);
-        });
+      // Close admin dashboard
+      closeAdminDashboard.addEventListener('click', closeAdminDashboardFn);
+
+      // Add destination
+      addDestForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('destName').value.trim();
+        const location = document.getElementById('destLocation').value.trim();
+        const price = parseInt(document.getElementById('destPrice').value);
+        const emoji = document.getElementById('destEmoji').value.trim() || '🏝️';
+        if (!name || !location || isNaN(price)) {
+          alert('Please fill all fields correctly.');
+          return;
+        }
+        const dests = getDestinations();
+        const newId = dests.length ? Math.max(...dests.map(d => d.id)) + 1 : 1;
+        dests.push({ id: newId, name, location, price, emoji });
+        saveDestinations(dests);
+        // clear form
+        document.getElementById('destName').value = '';
+        document.getElementById('destLocation').value = '';
+        document.getElementById('destPrice').value = '';
+        document.getElementById('destEmoji').value = '';
+        renderDestList();
+        renderDestinations(); // update main page
+        updateStats();
+        drawChart();
       });
 
-      // ESC closes all
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeAllModals();
-      });
-
-      // -------- Search --------
+      // Search
       function performSearch() {
         const input = document.getElementById('searchInput');
         const query = input.value.trim().toLowerCase();
@@ -1140,10 +1494,27 @@
         if (e.key === 'Enter') performSearch();
       });
 
+      // Close modals on overlay click
+      document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+          if (e.target === this) closeModal(this);
+        });
+      });
+
+      // ESC closes modals and dashboard
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (adminDashboard.classList.contains('active')) {
+            closeAdminDashboardFn();
+          } else {
+            closeAllModals();
+          }
+        }
+      });
+
       // -------- Init --------
       loadUser();
-
-      // Auto-close any open modals on page load (just in case)
+      renderDestinations();
       closeAllModals();
 
     })();
