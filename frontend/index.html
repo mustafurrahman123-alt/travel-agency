@@ -51,6 +51,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      cursor: default;
     }
 
     .brand i {
@@ -67,6 +68,7 @@
       background: rgba(43, 122, 138, 0.08);
       transition: all 0.25s ease;
       border: 1px solid transparent;
+      cursor: pointer;
     }
 
     .admin-link:hover {
@@ -193,32 +195,33 @@
 
     .destinations-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 2rem;
     }
 
     .destination-card {
       background: white;
       border-radius: 24px;
-      padding: 2rem 1.5rem 1.8rem;
+      padding: 1.8rem 1.5rem 1.5rem;
       text-align: center;
       box-shadow: 0 8px 28px rgba(0, 20, 30, 0.06);
       transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
       border: 1px solid rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(4px);
-      cursor: default;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .destination-card:hover {
       transform: translateY(-10px) scale(1.01);
       box-shadow: 0 20px 48px rgba(11, 59, 92, 0.12);
-      border-color: #2b7a8a20;
+      border-color: #2b7a8a30;
     }
 
     .destination-icon {
       font-size: 3.6rem;
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       line-height: 1.2;
     }
 
@@ -226,28 +229,48 @@
       font-size: 1.5rem;
       font-weight: 600;
       color: #0b3b5c;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.1rem;
     }
 
-    .destination-card p {
+    .destination-card .location {
       color: #4a5b6e;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 400;
-      margin-top: 0.3rem;
       opacity: 0.8;
+      margin-bottom: 0.5rem;
     }
 
-    .card-tag {
+    .price-badge {
       display: inline-block;
-      margin-top: 0.8rem;
-      padding: 0.2rem 1rem;
-      background: rgba(43, 122, 138, 0.08);
+      background: #0b3b5c;
+      color: white;
+      padding: 0.25rem 1.2rem;
       border-radius: 40px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #2b7a8a;
+      font-weight: 700;
+      font-size: 1rem;
       letter-spacing: 0.5px;
-      text-transform: uppercase;
+      margin: 0.3rem 0 0.8rem;
+    }
+
+    .book-btn {
+      background: transparent;
+      border: 2px solid #2b7a8a;
+      color: #2b7a8a;
+      padding: 0.5rem 2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-top: 0.3rem;
+      width: 100%;
+      max-width: 160px;
+    }
+
+    .book-btn:hover {
+      background: #2b7a8a;
+      color: white;
+      transform: scale(1.04);
     }
 
     /* ---------- Footer ---------- */
@@ -273,6 +296,137 @@
     .footer a:hover {
       color: #f39c12;
       text-decoration: underline;
+    }
+
+    /* ---------- MODALS (shared) ---------- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 32px;
+      max-width: 480px;
+      width: 100%;
+      padding: 2rem 2rem 2.2rem;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+      transform: translateY(30px) scale(0.96);
+      transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1);
+      position: relative;
+    }
+
+    .modal-overlay.active .modal-box {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.4rem;
+      font-size: 1.6rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: #1e2a3a;
+    }
+
+    .modal-box h2 {
+      font-size: 1.8rem;
+      color: #0b3b5c;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+
+    .modal-box .subtitle {
+      color: #4a5b6e;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #1e2a3a;
+      margin-bottom: 0.3rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      font-size: 1rem;
+      background: #fafcff;
+      transition: border 0.2s;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #2b7a8a;
+      box-shadow: 0 0 0 3px rgba(43, 122, 138, 0.15);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, #0b3b5c, #2b7a8a);
+      color: white;
+      border: none;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-top: 0.5rem;
+    }
+
+    .submit-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(11, 59, 92, 0.3);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    .admin-note {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-align: center;
+      margin-top: 1rem;
+      background: #f1f5f9;
+      padding: 0.5rem;
+      border-radius: 12px;
     }
 
     /* ---------- Responsive ---------- */
@@ -330,11 +484,11 @@
 
       .destinations-grid {
         gap: 1.2rem;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       }
 
-      .destination-card {
-        padding: 1.5rem 1rem;
+      .modal-box {
+        padding: 1.5rem;
       }
     }
 
@@ -350,56 +504,66 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
+
+  <!-- ========== HEADER ========== -->
   <header class="header">
     <div class="brand">✈️ Travel Agency</div>
-    <a href="#" class="admin-link">🔐 Admin Login</a>
+    <button class="admin-link" id="adminLoginBtn">🔐 Admin Login</button>
   </header>
 
-  <!-- Hero -->
+  <!-- ========== HERO ========== -->
   <section class="hero">
     <div class="hero-content">
       <h1>Explore the World with Us</h1>
       <p>Find the best travel packages at unbeatable prices.</p>
       <div class="search-wrapper">
-        <input type="text" placeholder="Search for destinations..." aria-label="Search destinations" />
-        <button type="button">🔍 Search</button>
+        <input type="text" placeholder="Search for destinations..." id="searchInput" aria-label="Search destinations" />
+        <button id="searchBtn">🔍 Search</button>
       </div>
     </div>
   </section>
 
-  <!-- Destinations -->
+  <!-- ========== DESTINATIONS ========== -->
   <section class="destinations-section">
     <h2>Popular Destinations</h2>
     <div class="destinations-grid">
-      <div class="destination-card">
+
+      <div class="destination-card" data-dest="Bali">
         <span class="destination-icon">🏝️</span>
         <h3>Bali</h3>
-        <p>Indonesia</p>
-        <span class="card-tag">🌴 Paradise</span>
+        <p class="location">Indonesia</p>
+        <span class="price-badge">$899</span>
+        <button class="book-btn" data-dest="Bali">Book Now</button>
       </div>
-      <div class="destination-card">
+
+      <div class="destination-card" data-dest="New York">
         <span class="destination-icon">🗽</span>
         <h3>New York</h3>
-        <p>USA</p>
-        <span class="card-tag">🗽 The Big Apple</span>
+        <p class="location">USA</p>
+        <span class="price-badge">$1,249</span>
+        <button class="book-btn" data-dest="New York">Book Now</button>
       </div>
-      <div class="destination-card">
+
+      <div class="destination-card" data-dest="Paris">
         <span class="destination-icon">🗼</span>
         <h3>Paris</h3>
-        <p>France</p>
-        <span class="card-tag">✨ City of Light</span>
+        <p class="location">France</p>
+        <span class="price-badge">$1,099</span>
+        <button class="book-btn" data-dest="Paris">Book Now</button>
       </div>
-      <div class="destination-card">
+
+      <div class="destination-card" data-dest="Tokyo">
         <span class="destination-icon">🏯</span>
         <h3>Tokyo</h3>
-        <p>Japan</p>
-        <span class="card-tag">🌸 Neon & Tradition</span>
+        <p class="location">Japan</p>
+        <span class="price-badge">$1,399</span>
+        <button class="book-btn" data-dest="Tokyo">Book Now</button>
       </div>
+
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ========== FOOTER ========== -->
   <footer class="footer">
     <p>© 2025 <span>Travel Agency</span>. All rights reserved.</p>
     <p style="margin-top: 0.4rem; font-size: 0.85rem; opacity: 0.6;">
@@ -407,23 +571,206 @@
     </p>
   </footer>
 
-  <!-- Optional tiny interactivity: search alert -->
+  <!-- ========== BOOKING MODAL ========== -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeBookingModal">&times;</button>
+      <h2>📅 Book Your Trip</h2>
+      <p class="subtitle" id="bookingDestDisplay">Destination: <strong>Bali</strong></p>
+
+      <form id="bookingForm">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" placeholder="e.g. John Doe" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="john@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="travelDate">Travel Date</label>
+          <input type="date" id="travelDate" required />
+        </div>
+        <div class="form-group">
+          <label for="guests">Number of Guests</label>
+          <select id="guests">
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6+">6+</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">✈️ Confirm Booking</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== ADMIN LOGIN MODAL ========== -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeAdminModal">&times;</button>
+      <h2>🔐 Admin Login</h2>
+      <p class="subtitle">Access the dashboard to manage packages.</p>
+
+      <form id="adminForm">
+        <div class="form-group">
+          <label for="adminUser">Username</label>
+          <input type="text" id="adminUser" placeholder="admin" required />
+        </div>
+        <div class="form-group">
+          <label for="adminPass">Password</label>
+          <input type="password" id="adminPass" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="submit-btn">🔓 Sign In</button>
+        <div class="admin-note">Demo: <strong>admin</strong> / <strong>password</strong></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== JAVASCRIPT ========== -->
   <script>
-    document.querySelector('.search-wrapper button').addEventListener('click', function() {
-      const input = document.querySelector('.search-wrapper input');
-      const query = input.value.trim();
-      if (query) {
-        alert(`🔍 Searching for "${query}"... (demo)`);
-      } else {
-        alert('✈️ Please enter a destination!');
+    (function() {
+      'use strict';
+
+      // --- DOM refs ---
+      const bookingModal = document.getElementById('bookingModal');
+      const adminModal = document.getElementById('adminModal');
+      const closeBooking = document.getElementById('closeBookingModal');
+      const closeAdmin = document.getElementById('closeAdminModal');
+      const adminLoginBtn = document.getElementById('adminLoginBtn');
+      const bookingDestDisplay = document.getElementById('bookingDestDisplay');
+      const bookingForm = document.getElementById('bookingForm');
+      const adminForm = document.getElementById('adminForm');
+
+      // --- Helpers ---
+      function openModal(modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
       }
-    });
-    // Allow Enter key
-    document.querySelector('.search-wrapper input').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        document.querySelector('.search-wrapper button').click();
+
+      function closeModal(modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
       }
-    });
+
+      function closeAllModals() {
+        closeModal(bookingModal);
+        closeModal(adminModal);
+      }
+
+      // --- Booking: open from "Book Now" buttons ---
+      document.querySelectorAll('.book-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const dest = this.getAttribute('data-dest') || 'Unknown';
+          // set destination in modal
+          bookingDestDisplay.innerHTML = `Destination: <strong>${dest}</strong>`;
+          // reset form fields (keep date empty)
+          document.getElementById('fullName').value = '';
+          document.getElementById('email').value = '';
+          document.getElementById('travelDate').value = '';
+          document.getElementById('guests').value = '2';
+          openModal(bookingModal);
+        });
+      });
+
+      // --- Close booking modal ---
+      closeBooking.addEventListener('click', () => closeModal(bookingModal));
+
+      // --- Admin login: open ---
+      adminLoginBtn.addEventListener('click', () => {
+        document.getElementById('adminUser').value = '';
+        document.getElementById('adminPass').value = '';
+        openModal(adminModal);
+      });
+
+      closeAdmin.addEventListener('click', () => closeModal(adminModal));
+
+      // --- Click on overlay to close ---
+      document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+          if (e.target === this) closeModal(this);
+        });
+      });
+
+      // --- ESC key closes all ---
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAllModals();
+      });
+
+      // --- Booking form submission ---
+      bookingForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const date = document.getElementById('travelDate').value;
+        const guests = document.getElementById('guests').value;
+
+        if (!name || !email || !date) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+
+        // Extract destination from display
+        const destStrong = bookingDestDisplay.querySelector('strong');
+        const dest = destStrong ? destStrong.textContent : 'Unknown';
+
+        alert(`✅ Booking confirmed for ${dest}!\n\n👤 ${name}\n📧 ${email}\n📅 ${date}\n👥 Guests: ${guests}\n\n✈️ Thank you for choosing us!`);
+        closeModal(bookingModal);
+      });
+
+      // --- Admin form submission ---
+      adminForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const user = document.getElementById('adminUser').value.trim();
+        const pass = document.getElementById('adminPass').value.trim();
+
+        if (user === 'admin' && pass === 'password') {
+          alert('🔓 Welcome, Admin! You are now logged in. (Demo)');
+          closeModal(adminModal);
+          // You could redirect or show admin panel here
+        } else {
+          alert('❌ Invalid credentials. Try: admin / password');
+        }
+      });
+
+      // --- Search functionality (demo) ---
+      function performSearch() {
+        const input = document.getElementById('searchInput');
+        const query = input.value.trim();
+        if (query) {
+          // Simple client-side filter: highlight matching cards
+          const cards = document.querySelectorAll('.destination-card');
+          let found = false;
+          cards.forEach(card => {
+            const destName = card.getAttribute('data-dest') || '';
+            if (destName.toLowerCase().includes(query.toLowerCase())) {
+              card.style.display = 'flex';
+              found = true;
+            } else {
+              card.style.display = 'none';
+            }
+          });
+          if (!found) {
+            alert(`🔍 No destinations found for "${query}". Showing all.`);
+            cards.forEach(c => c.style.display = 'flex');
+          }
+        } else {
+          // show all
+          document.querySelectorAll('.destination-card').forEach(c => c.style.display = 'flex');
+          alert('✈️ Showing all destinations.');
+        }
+      }
+
+      document.getElementById('searchBtn').addEventListener('click', performSearch);
+      document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') performSearch();
+      });
+
+    })();
   </script>
+
 </body>
 </html>
