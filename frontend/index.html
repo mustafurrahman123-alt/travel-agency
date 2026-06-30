@@ -126,6 +126,27 @@
             background: #ede9fe;
         }
 
+        .nav-links .user-badge {
+            background: #e2e8f0;
+            border-radius: 40px;
+            padding: 6px 18px 6px 14px;
+            font-weight: 500;
+            color: #0f172a;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-links .user-badge i {
+            color: #3b82f6;
+        }
+        .nav-links .logout-btn {
+            color: #ef4444;
+            font-weight: 500;
+        }
+        .nav-links .logout-btn:hover {
+            background: #fef2f2;
+        }
+
         /* ----- HERO ----- */
         .hero {
             text-align: center;
@@ -292,10 +313,16 @@
             font-weight: 600;
             font-size: 0.9rem;
             transition: all 0.2s ease;
+            border: none;
         }
         .btn-book:hover {
             background: #3b82f6;
             transform: scale(1.02);
+        }
+        .btn-book:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* individual card colors */
@@ -343,7 +370,7 @@
 
         .modal-box {
             background: #ffffff;
-            max-width: 520px;
+            max-width: 540px;
             width: 100%;
             border-radius: 32px;
             padding: 32px 28px;
@@ -352,6 +379,10 @@
             animation: slideUp 0.3s ease;
             max-height: 90vh;
             overflow-y: auto;
+        }
+
+        .modal-box.wide {
+            max-width: 700px;
         }
 
         .modal-close {
@@ -389,12 +420,19 @@
             align-items: center;
             padding: 14px 0;
             border-bottom: 1px solid #f1f5f9;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .booking-item:last-child {
             border-bottom: none;
         }
         .booking-dest {
             font-weight: 600;
+        }
+        .booking-dest small {
+            font-weight: 400;
+            color: #64748b;
+            font-size: 0.85rem;
         }
         .booking-status {
             background: #dbeafe;
@@ -407,6 +445,51 @@
         .booking-status.confirmed {
             background: #d1fae5;
             color: #065f46;
+        }
+        .booking-status.cancelled {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+        .booking-status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .booking-actions button {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .booking-actions .cancel-btn {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+        .booking-actions .cancel-btn:hover {
+            background: #fee2e2;
+        }
+        .booking-actions .confirm-btn {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .booking-actions .confirm-btn:hover {
+            background: #a7f3d0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: #94a3b8;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: block;
         }
 
         /* Login / Register form */
@@ -433,6 +516,15 @@
             outline: none;
             background: #fff;
         }
+        .form-group .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: none;
+        }
+        .form-group .error-msg.show {
+            display: block;
+        }
 
         .modal-btn {
             width: 100%;
@@ -449,6 +541,10 @@
         .modal-btn:hover {
             background: #2563eb;
         }
+        .modal-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
         .modal-footer-text {
             text-align: center;
@@ -459,6 +555,7 @@
         .modal-footer-text a {
             color: #3b82f6;
             font-weight: 600;
+            cursor: pointer;
         }
         .modal-footer-text a:hover {
             text-decoration: underline;
@@ -485,6 +582,39 @@
         .stat-card .label {
             color: #64748b;
             font-size: 0.9rem;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+        .admin-table th {
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 2px solid #e2e8f0;
+            color: #475569;
+            font-weight: 600;
+        }
+        .admin-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .admin-table .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge.user {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .badge.admin {
+            background: #ede9fe;
+            color: #6d28d9;
         }
 
         /* ----- TOAST ----- */
@@ -628,6 +758,16 @@
             .hero h1 {
                 font-size: 2.2rem;
             }
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+            .admin-table {
+                font-size: 0.75rem;
+            }
+            .admin-table th,
+            .admin-table td {
+                padding: 6px 4px;
+            }
         }
 
         @media (max-width: 600px) {
@@ -674,8 +814,16 @@
             .modal-box {
                 padding: 24px 18px;
             }
-            .admin-stats {
-                grid-template-columns: 1fr;
+            .modal-box.wide {
+                padding: 20px 14px;
+            }
+            .booking-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+            }
+            .booking-actions {
+                justify-content: flex-end;
             }
         }
 
@@ -707,11 +855,8 @@
                 Travel<span>Agency</span>
             </div>
 
-            <div class="nav-links">
-                <button class="nav-btn" data-modal="bookings"><i class="fas fa-bookmark"></i> My Bookings</button>
-                <button class="nav-btn" data-modal="login"><i class="fas fa-sign-in-alt"></i> Login</button>
-                <button class="nav-btn btn-primary" data-modal="register"><i class="fas fa-user-plus"></i> Register</button>
-                <button class="nav-btn admin-link" data-modal="admin"><i class="fas fa-lock"></i> Admin</button>
+            <div class="nav-links" id="navLinks">
+                <!-- Dynamic content rendered by JS -->
             </div>
         </div>
     </header>
@@ -738,7 +883,7 @@
 
         <div class="destinations-grid" id="destinationsGrid">
             <!-- Bali -->
-            <div class="destination-card card-bali" data-name="bali" data-country="indonesia" data-price="899">
+            <div class="destination-card card-bali" data-name="bali" data-country="indonesia" data-price="899" data-dest="Bali">
                 <div class="card-img">
                     <span class="main-icon">🏝️</span>
                 </div>
@@ -753,7 +898,7 @@
             </div>
 
             <!-- New York -->
-            <div class="destination-card card-ny" data-name="new york" data-country="usa" data-price="1249">
+            <div class="destination-card card-ny" data-name="new york" data-country="usa" data-price="1249" data-dest="New York">
                 <div class="card-img">
                     <span class="main-icon">🗽</span>
                 </div>
@@ -768,7 +913,7 @@
             </div>
 
             <!-- Paris -->
-            <div class="destination-card card-paris" data-name="paris" data-country="france" data-price="1099">
+            <div class="destination-card card-paris" data-name="paris" data-country="france" data-price="1099" data-dest="Paris">
                 <div class="card-img">
                     <span class="main-icon">🗼</span>
                 </div>
@@ -783,7 +928,7 @@
             </div>
 
             <!-- Tokyo -->
-            <div class="destination-card card-tokyo" data-name="tokyo" data-country="japan" data-price="1399">
+            <div class="destination-card card-tokyo" data-name="tokyo" data-country="japan" data-price="1399" data-dest="Tokyo">
                 <div class="card-img">
                     <span class="main-icon">🏯</span>
                 </div>
@@ -798,7 +943,7 @@
             </div>
 
             <!-- India / Delhi -->
-            <div class="destination-card card-india" data-name="india" data-country="delhi" data-price="299">
+            <div class="destination-card card-india" data-name="india" data-country="delhi" data-price="299" data-dest="India">
                 <div class="card-img">
                     <span class="main-icon">🏛️</span>
                 </div>
@@ -836,23 +981,11 @@
     <!-- ===== MODALS ===== -->
     <!-- My Bookings -->
     <div class="modal-overlay" id="modal-bookings">
-        <div class="modal-box">
+        <div class="modal-box wide">
             <button class="modal-close" data-close="bookings">&times;</button>
             <div class="modal-title"><i class="fas fa-bookmark"></i> My Bookings</div>
-            <div class="booking-item">
-                <span class="booking-dest">🏝️ Bali, Indonesia</span>
-                <span class="booking-status confirmed">Confirmed</span>
-            </div>
-            <div class="booking-item">
-                <span class="booking-dest">🗼 Paris, France</span>
-                <span class="booking-status">Pending</span>
-            </div>
-            <div class="booking-item">
-                <span class="booking-dest">🏯 Tokyo, Japan</span>
-                <span class="booking-status confirmed">Confirmed</span>
-            </div>
-            <div style="margin-top: 16px; text-align: center; color: #94a3b8; font-size: 0.9rem;">
-                <i class="fas fa-info-circle"></i> 3 upcoming trips
+            <div id="bookingsList">
+                <!-- Rendered by JS -->
             </div>
         </div>
     </div>
@@ -865,15 +998,16 @@
             <form id="loginForm" onsubmit="return false;">
                 <div class="form-group">
                     <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" placeholder="you@example.com" value="demo@travel.com" />
+                    <input type="email" id="loginEmail" placeholder="you@example.com" />
+                    <div class="error-msg" id="loginError">Invalid email or password</div>
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" value="password123" />
+                    <input type="password" id="loginPassword" placeholder="••••••••" />
                 </div>
                 <button type="submit" class="modal-btn" id="loginSubmit">Log In</button>
                 <div class="modal-footer-text">
-                    Don't have an account? <a href="#" data-modal-switch="register">Register</a>
+                    Don't have an account? <a data-modal-switch="register">Register</a>
                 </div>
             </form>
         </div>
@@ -888,18 +1022,21 @@
                 <div class="form-group">
                     <label for="regName">Full Name</label>
                     <input type="text" id="regName" placeholder="John Doe" />
+                    <div class="error-msg" id="regNameError">Name is required</div>
                 </div>
                 <div class="form-group">
                     <label for="regEmail">Email</label>
                     <input type="email" id="regEmail" placeholder="you@example.com" />
+                    <div class="error-msg" id="regEmailError">Email already registered or invalid</div>
                 </div>
                 <div class="form-group">
                     <label for="regPassword">Password</label>
-                    <input type="password" id="regPassword" placeholder="Create a strong password" />
+                    <input type="password" id="regPassword" placeholder="Min 6 characters" />
+                    <div class="error-msg" id="regPasswordError">Password must be at least 6 characters</div>
                 </div>
                 <button type="submit" class="modal-btn" id="registerSubmit">Create Account</button>
                 <div class="modal-footer-text">
-                    Already have an account? <a href="#" data-modal-switch="login">Log In</a>
+                    Already have an account? <a data-modal-switch="login">Log In</a>
                 </div>
             </form>
         </div>
@@ -907,40 +1044,19 @@
 
     <!-- Admin -->
     <div class="modal-overlay" id="modal-admin">
-        <div class="modal-box">
+        <div class="modal-box wide">
             <button class="modal-close" data-close="admin">&times;</button>
             <div class="modal-title"><i class="fas fa-lock"></i> Admin Dashboard</div>
-            <div class="admin-stats">
-                <div class="stat-card">
-                    <div class="number">128</div>
-                    <div class="label">Total Bookings</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number">$54.2k</div>
-                    <div class="label">Revenue</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number">5</div>
-                    <div class="label">Active Tours</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number">22</div>
-                    <div class="label">New Users</div>
-                </div>
+            <div id="adminContent">
+                <!-- Rendered by JS -->
             </div>
-            <p style="color: #64748b; text-align: center; font-size: 0.95rem; margin-top: 8px;">
-                <i class="fas fa-shield-alt"></i> Secure admin area — demo mode
-            </p>
-            <button class="modal-btn" style="background: #8b5cf6; margin-top: 16px;" id="adminLogout">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
         </div>
     </div>
 
     <!-- ===== TOAST ===== -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Booking confirmed!</span>
+        <span id="toastMessage">Success!</span>
         <span class="close-toast" id="toastClose">&times;</span>
     </div>
 
@@ -949,7 +1065,80 @@
         (function() {
             'use strict';
 
-            // ----- DOM refs -----
+            // ============================================================
+            //  DATA LAYER — localStorage persistence
+            // ============================================================
+
+            const STORAGE_KEY = 'travelAgencyData';
+
+            function getDefaultData() {
+                return {
+                    users: [
+                        { id: '1', name: 'Admin', email: 'admin@travel.com', password: 'admin123', role: 'admin' },
+                        { id: '2', name: 'Demo User', email: 'demo@travel.com', password: 'demo123', role: 'user' }
+                    ],
+                    bookings: [
+                        { id: 'b1', userId: '2', destination: 'Bali', price: '$899', status: 'confirmed',
+                            bookingDate: '2025-06-15' },
+                        { id: 'b2', userId: '2', destination: 'Tokyo', price: '$1,399', status: 'pending',
+                            bookingDate: '2025-07-01' },
+                        { id: 'b3', userId: '1', destination: 'Paris', price: '$1,099', status: 'confirmed',
+                            bookingDate: '2025-05-20' }
+                    ],
+                    currentUserId: null
+                };
+            }
+
+            function loadData() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const data = JSON.parse(raw);
+                        // ensure all fields exist
+                        const defaults = getDefaultData();
+                        for (const key of Object.keys(defaults)) {
+                            if (!(key in data)) data[key] = defaults[key];
+                        }
+                        return data;
+                    }
+                } catch (e) { /* ignore */ }
+                return getDefaultData();
+            }
+
+            function saveData(data) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            }
+
+            // ----- Helpers -----
+            function generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+            }
+
+            function getCurrentUser(data) {
+                if (!data.currentUserId) return null;
+                return data.users.find(u => u.id === data.currentUserId) || null;
+            }
+
+            function getUserBookings(data, userId) {
+                return data.bookings.filter(b => b.userId === userId);
+            }
+
+            function findUserByEmail(data, email) {
+                return data.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+            }
+
+            // ============================================================
+            //  APP STATE
+            // ============================================================
+
+            let appData = loadData();
+            let currentUser = getCurrentUser(appData);
+
+            // ============================================================
+            //  DOM REFS
+            // ============================================================
+
+            const navLinks = document.getElementById('navLinks');
             const searchInput = document.getElementById('searchInput');
             const searchBtn = document.getElementById('searchBtn');
             const cards = document.querySelectorAll('.destination-card');
@@ -957,25 +1146,42 @@
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toastMessage');
             const toastClose = document.getElementById('toastClose');
+            const logo = document.getElementById('logo');
 
-            // Modal elements
-            const modals = {
-                bookings: document.getElementById('modal-bookings'),
-                login: document.getElementById('modal-login'),
-                register: document.getElementById('modal-register'),
-                admin: document.getElementById('modal-admin'),
-            };
+            // Modals
+            const modalBookings = document.getElementById('modal-bookings');
+            const modalLogin = document.getElementById('modal-login');
+            const modalRegister = document.getElementById('modal-register');
+            const modalAdmin = document.getElementById('modal-admin');
+            const bookingsList = document.getElementById('bookingsList');
+            const adminContent = document.getElementById('adminContent');
 
-            const navBtns = document.querySelectorAll('.nav-btn[data-modal]');
-            const closeBtns = document.querySelectorAll('[data-close]');
-            const switchLinks = document.querySelectorAll('[data-modal-switch]');
+            // Forms
+            const loginForm = document.getElementById('loginForm');
+            const loginEmail = document.getElementById('loginEmail');
+            const loginPassword = document.getElementById('loginPassword');
+            const loginError = document.getElementById('loginError');
+            const loginSubmit = document.getElementById('loginSubmit');
+
+            const registerForm = document.getElementById('registerForm');
+            const regName = document.getElementById('regName');
+            const regEmail = document.getElementById('regEmail');
+            const regPassword = document.getElementById('regPassword');
+            const regNameError = document.getElementById('regNameError');
+            const regEmailError = document.getElementById('regEmailError');
+            const regPasswordError = document.getElementById('regPasswordError');
+            const registerSubmit = document.getElementById('registerSubmit');
 
             let toastTimeout = null;
-            let currentModal = null;
 
-            // ----- Toast -----
-            function showToast(message) {
-                toastMsg.textContent = message || 'Action completed!';
+            // ============================================================
+            //  TOAST
+            // ============================================================
+
+            function showToast(message, isError = false) {
+                toastMsg.textContent = message;
+                toast.querySelector('i').className = isError ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+                toast.querySelector('i').style.color = isError ? '#f87171' : '#4ade80';
                 toast.classList.add('show');
                 if (toastTimeout) {
                     clearTimeout(toastTimeout);
@@ -995,15 +1201,80 @@
                 }
             }
 
-            // ----- Modal helpers -----
+            toastClose.addEventListener('click', hideToast);
+
+            // ============================================================
+            //  NAVIGATION RENDER
+            // ============================================================
+
+            function renderNav() {
+                const user = getCurrentUser(appData);
+                let html = '';
+
+                if (user) {
+                    // Logged in
+                    html += `<span class="user-badge"><i class="fas fa-user-circle"></i> ${user.name}</span>`;
+                    html +=
+                        `<button class="nav-btn" data-modal="bookings"><i class="fas fa-bookmark"></i> My Bookings</button>`;
+                    if (user.role === 'admin') {
+                        html += `<button class="nav-btn admin-link" data-modal="admin"><i class="fas fa-lock"></i> Admin</button>`;
+                    }
+                    html += `<button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>`;
+                } else {
+                    // Logged out
+                    html += `<button class="nav-btn" data-modal="login"><i class="fas fa-sign-in-alt"></i> Login</button>`;
+                    html +=
+                        `<button class="nav-btn btn-primary" data-modal="register"><i class="fas fa-user-plus"></i> Register</button>`;
+                    html += `<button class="nav-btn admin-link" data-modal="admin"><i class="fas fa-lock"></i> Admin</button>`;
+                }
+
+                navLinks.innerHTML = html;
+
+                // Re-bind modal triggers
+                document.querySelectorAll('.nav-btn[data-modal]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const modalId = this.getAttribute('data-modal');
+                        if (modalId) openModal(modalId);
+                    });
+                });
+
+                // Logout
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function() {
+                        appData.currentUserId = null;
+                        currentUser = null;
+                        saveData(appData);
+                        renderNav();
+                        showToast('👋 Logged out successfully');
+                        closeAllModals();
+                    });
+                }
+            }
+
+            // ============================================================
+            //  MODAL CONTROLS
+            // ============================================================
+
+            const modals = {
+                bookings: modalBookings,
+                login: modalLogin,
+                register: modalRegister,
+                admin: modalAdmin,
+            };
+
+            let currentModal = null;
+
             function openModal(id) {
-                // Close any open modal
                 closeAllModals();
                 const modal = modals[id];
                 if (modal) {
                     modal.classList.add('active');
                     currentModal = id;
                     document.body.style.overflow = 'hidden';
+                    // Refresh content
+                    if (id === 'bookings') renderBookings();
+                    if (id === 'admin') renderAdmin();
                 }
             }
 
@@ -1022,32 +1293,22 @@
                 });
                 currentModal = null;
                 document.body.style.overflow = '';
+                // Reset form errors
+                document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
             }
 
-            // ----- Event listeners for nav buttons -----
-            navBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    const modalId = this.getAttribute('data-modal');
-                    if (modalId) {
-                        e.preventDefault();
-                        openModal(modalId);
-                    }
-                });
-            });
-
             // Close buttons
-            closeBtns.forEach(btn => {
+            document.querySelectorAll('[data-close]').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const id = this.getAttribute('data-close');
                     if (id) closeModal(id);
                 });
             });
 
-            // Click outside modal to close
+            // Click outside
             Object.values(modals).forEach(modal => {
                 modal.addEventListener('click', function(e) {
                     if (e.target === this) {
-                        // find the id from the element id
                         const id = this.id.replace('modal-', '');
                         closeModal(id);
                     }
@@ -1055,12 +1316,11 @@
             });
 
             // Switch between login/register
-            switchLinks.forEach(link => {
+            document.querySelectorAll('[data-modal-switch]').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const target = this.getAttribute('data-modal-switch');
                     if (target) {
-                        // Close current modal (assuming it's login/register)
                         const currentId = currentModal;
                         if (currentId) closeModal(currentId);
                         openModal(target);
@@ -1068,37 +1328,368 @@
                 });
             });
 
-            // ----- Form submissions (demo) -----
-            document.getElementById('loginSubmit')?.addEventListener('click', function(e) {
+            // ============================================================
+            //  RENDER BOOKINGS
+            // ============================================================
+
+            function renderBookings() {
+                const user = getCurrentUser(appData);
+                if (!user) {
+                    bookingsList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-lock"></i>
+                            <p>Please log in to view your bookings.</p>
+                            <button class="modal-btn" style="max-width:200px;margin:12px auto 0;" onclick="window.dispatchEvent(new Event('openLoginFromBookings'))">Log In</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const userBookings = getUserBookings(appData, user.id);
+                if (userBookings.length === 0) {
+                    bookingsList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-suitcase"></i>
+                            <p>You have no bookings yet. Start exploring!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                userBookings.forEach(b => {
+                    const statusClass = b.status || 'pending';
+                    html += `
+                        <div class="booking-item">
+                            <span class="booking-dest">
+                                ${b.destination} 
+                                <small>• ${b.bookingDate || 'N/A'}</small>
+                            </span>
+                            <span class="booking-status ${statusClass}">${statusClass.charAt(0).toUpperCase() + statusClass.slice(1)}</span>
+                            <div class="booking-actions">
+                                ${statusClass !== 'cancelled' ? `<button class="cancel-btn" data-bid="${b.id}">Cancel</button>` : ''}
+                                ${statusClass === 'pending' ? `<button class="confirm-btn" data-bid="${b.id}">Confirm</button>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                bookingsList.innerHTML = html;
+
+                // Cancel booking
+                bookingsList.querySelectorAll('.cancel-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const bid = this.getAttribute('data-bid');
+                        const booking = appData.bookings.find(b => b.id === bid);
+                        if (booking && booking.userId === user.id) {
+                            if (confirm(`Cancel booking for ${booking.destination}?`)) {
+                                booking.status = 'cancelled';
+                                saveData(appData);
+                                renderBookings();
+                                showToast(`❌ Cancelled ${booking.destination}`);
+                            }
+                        }
+                    });
+                });
+
+                // Confirm booking (admin or user can confirm pending)
+                bookingsList.querySelectorAll('.confirm-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const bid = this.getAttribute('data-bid');
+                        const booking = appData.bookings.find(b => b.id === bid);
+                        if (booking) {
+                            booking.status = 'confirmed';
+                            saveData(appData);
+                            renderBookings();
+                            showToast(`✅ Confirmed ${booking.destination}`);
+                        }
+                    });
+                });
+            }
+
+            // ============================================================
+            //  RENDER ADMIN
+            // ============================================================
+
+            function renderAdmin() {
+                const user = getCurrentUser(appData);
+                if (!user || user.role !== 'admin') {
+                    adminContent.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-lock"></i>
+                            <p>Admin access required. Please log in as an administrator.</p>
+                            <button class="modal-btn" style="max-width:200px;margin:12px auto 0;" onclick="window.dispatchEvent(new Event('openLoginFromAdmin'))">Log In</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const totalUsers = appData.users.length;
+                const totalBookings = appData.bookings.length;
+                const confirmed = appData.bookings.filter(b => b.status === 'confirmed').length;
+                const revenue = appData.bookings.filter(b => b.status === 'confirmed')
+                    .reduce((sum, b) => {
+                        const num = parseInt(b.price.replace(/[$,]/g, ''));
+                        return sum + (isNaN(num) ? 0 : num);
+                    }, 0);
+
+                let html = `
+                    <div class="admin-stats">
+                        <div class="stat-card"><div class="number">${totalUsers}</div><div class="label">Total Users</div></div>
+                        <div class="stat-card"><div class="number">${totalBookings}</div><div class="label">Total Bookings</div></div>
+                        <div class="stat-card"><div class="number">${confirmed}</div><div class="label">Confirmed</div></div>
+                        <div class="stat-card"><div class="number">$${revenue.toLocaleString()}</div><div class="label">Revenue</div></div>
+                    </div>
+                    <h4 style="margin:20px 0 8px;color:#0f172a;">All Users</h4>
+                    <table class="admin-table">
+                        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Bookings</th></tr></thead>
+                        <tbody>
+                `;
+
+                appData.users.forEach(u => {
+                    const count = appData.bookings.filter(b => b.userId === u.id).length;
+                    const roleBadge = u.role === 'admin' ? '<span class="badge admin">Admin</span>' :
+                        '<span class="badge user">User</span>';
+                    html += `
+                        <tr>
+                            <td>${u.name}</td>
+                            <td>${u.email}</td>
+                            <td>${roleBadge}</td>
+                            <td>${count}</td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                        </tbody>
+                    </table>
+                    <h4 style="margin:20px 0 8px;color:#0f172a;">All Bookings</h4>
+                    <table class="admin-table">
+                        <thead><tr><th>User</th><th>Destination</th><th>Price</th><th>Status</th><th>Date</th></tr></thead>
+                        <tbody>
+                `;
+
+                if (appData.bookings.length === 0) {
+                    html += `<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:20px;">No bookings yet</td></tr>`;
+                } else {
+                    appData.bookings.forEach(b => {
+                        const userObj = appData.users.find(u => u.id === b.userId);
+                        const userName = userObj ? userObj.name : 'Unknown';
+                        const statusClass = b.status || 'pending';
+                        html += `
+                            <tr>
+                                <td>${userName}</td>
+                                <td>${b.destination}</td>
+                                <td>${b.price}</td>
+                                <td><span class="booking-status ${statusClass}">${statusClass.charAt(0).toUpperCase() + statusClass.slice(1)}</span></td>
+                                <td>${b.bookingDate || 'N/A'}</td>
+                            </tr>
+                        `;
+                    });
+                }
+
+                html += `
+                        </tbody>
+                    </table>
+                    <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+                        <button class="modal-btn" style="background:#8b5cf6;width:auto;padding:10px 28px;" id="adminAddDemoBooking">+ Add Demo Booking</button>
+                        <button class="modal-btn" style="background:#ef4444;width:auto;padding:10px 28px;" id="adminClearAll">🗑️ Clear All Data</button>
+                    </div>
+                `;
+
+                adminContent.innerHTML = html;
+
+                document.getElementById('adminAddDemoBooking')?.addEventListener('click', function() {
+                    const user = appData.users.find(u => u.role === 'user');
+                    if (!user) {
+                        showToast('No user found to add booking for', true);
+                        return;
+                    }
+                    const dests = ['Bali', 'New York', 'Paris', 'Tokyo', 'India'];
+                    const prices = ['$899', '$1,249', '$1,099', '$1,399', '$299'];
+                    const idx = Math.floor(Math.random() * dests.length);
+                    appData.bookings.push({
+                        id: generateId(),
+                        userId: user.id,
+                        destination: dests[idx],
+                        price: prices[idx],
+                        status: 'pending',
+                        bookingDate: new Date().toISOString().slice(0, 10)
+                    });
+                    saveData(appData);
+                    renderAdmin();
+                    showToast(`📌 Added demo booking for ${user.name}`);
+                });
+
+                document.getElementById('adminClearAll')?.addEventListener('click', function() {
+                    if (confirm('⚠️ This will delete ALL users and bookings. Are you sure?')) {
+                        if (confirm('Really? This cannot be undone.')) {
+                            appData.users = [];
+                            appData.bookings = [];
+                            appData.currentUserId = null;
+                            currentUser = null;
+                            saveData(appData);
+                            renderNav();
+                            renderAdmin();
+                            showToast('🗑️ All data cleared');
+                        }
+                    }
+                });
+            }
+
+            // ============================================================
+            //  AUTH: LOGIN
+            // ============================================================
+
+            loginSubmit.addEventListener('click', function(e) {
                 e.preventDefault();
-                const email = document.getElementById('loginEmail')?.value || '';
-                showToast(`🔐 Logged in as ${email || 'demo user'}`);
+                const email = loginEmail.value.trim();
+                const password = loginPassword.value.trim();
+
+                loginError.classList.remove('show');
+
+                if (!email || !password) {
+                    loginError.textContent = 'Please fill in all fields';
+                    loginError.classList.add('show');
+                    return;
+                }
+
+                const user = findUserByEmail(appData, email);
+                if (!user || user.password !== password) {
+                    loginError.textContent = 'Invalid email or password';
+                    loginError.classList.add('show');
+                    return;
+                }
+
+                // Login success
+                appData.currentUserId = user.id;
+                currentUser = user;
+                saveData(appData);
+                renderNav();
                 closeModal('login');
+                showToast(`👋 Welcome back, ${user.name}!`);
+                // Reset form
+                loginEmail.value = '';
+                loginPassword.value = '';
             });
 
-            document.getElementById('registerSubmit')?.addEventListener('click', function(e) {
+            // Enter key on login
+            loginPassword.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') loginSubmit.click();
+            });
+            loginEmail.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') loginSubmit.click();
+            });
+
+            // ============================================================
+            //  AUTH: REGISTER
+            // ============================================================
+
+            registerSubmit.addEventListener('click', function(e) {
                 e.preventDefault();
-                const name = document.getElementById('regName')?.value || 'Guest';
-                showToast(`✅ Account created for ${name}!`);
+                const name = regName.value.trim();
+                const email = regEmail.value.trim();
+                const password = regPassword.value.trim();
+
+                let valid = true;
+
+                // Reset errors
+                regNameError.classList.remove('show');
+                regEmailError.classList.remove('show');
+                regPasswordError.classList.remove('show');
+
+                if (!name) {
+                    regNameError.classList.add('show');
+                    valid = false;
+                }
+                if (password.length < 6) {
+                    regPasswordError.classList.add('show');
+                    valid = false;
+                }
+                if (!email || !email.includes('@')) {
+                    regEmailError.textContent = 'Please enter a valid email address';
+                    regEmailError.classList.add('show');
+                    valid = false;
+                } else if (findUserByEmail(appData, email)) {
+                    regEmailError.textContent = 'Email already registered. Please log in.';
+                    regEmailError.classList.add('show');
+                    valid = false;
+                }
+
+                if (!valid) return;
+
+                // Create user
+                const newUser = {
+                    id: generateId(),
+                    name: name,
+                    email: email,
+                    password: password,
+                    role: 'user'
+                };
+                appData.users.push(newUser);
+                appData.currentUserId = newUser.id;
+                currentUser = newUser;
+                saveData(appData);
+
+                renderNav();
                 closeModal('register');
+                showToast(`🎉 Welcome, ${name}! Account created.`);
+
+                // Reset form
+                regName.value = '';
+                regEmail.value = '';
+                regPassword.value = '';
             });
 
-            document.getElementById('adminLogout')?.addEventListener('click', function() {
-                showToast('🔒 Logged out of admin panel');
-                closeModal('admin');
+            // Enter key on register
+            regPassword.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') registerSubmit.click();
             });
 
-            // ----- Book button handler -----
+            // ============================================================
+            //  BOOK BUTTONS (destinations)
+            // ============================================================
+
             bookBtns.forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const dest = this.getAttribute('data-dest') || 'destination';
                     const price = this.getAttribute('data-price') || '';
-                    showToast(`✅ Booked ${dest} — ${price} confirmed!`);
+
+                    const user = getCurrentUser(appData);
+                    if (!user) {
+                        showToast('🔐 Please log in to book a trip', true);
+                        openModal('login');
+                        return;
+                    }
+
+                    // Check if already booked
+                    const existing = appData.bookings.find(b => b.userId === user.id && b.destination === dest && b
+                        .status !== 'cancelled');
+                    if (existing) {
+                        showToast(`ℹ️ You already have a booking for ${dest}`, true);
+                        return;
+                    }
+
+                    // Create booking
+                    appData.bookings.push({
+                        id: generateId(),
+                        userId: user.id,
+                        destination: dest,
+                        price: price,
+                        status: 'pending',
+                        bookingDate: new Date().toISOString().slice(0, 10)
+                    });
+                    saveData(appData);
+
+                    showToast(`✅ Booked ${dest} — ${price} (pending confirmation)`);
                 });
             });
 
-            // ----- Search / filter -----
+            // ============================================================
+            //  SEARCH
+            // ============================================================
+
             function filterDestinations(query) {
                 const q = query.trim().toLowerCase();
                 cards.forEach(card => {
@@ -1119,19 +1710,43 @@
                 filterDestinations(this.value);
             });
 
-            // ----- Logo click: reset search & show all -----
-            document.getElementById('logo')?.addEventListener('click', function() {
+            // ============================================================
+            //  LOGO — reset & home
+            // ============================================================
+
+            logo.addEventListener('click', function() {
                 searchInput.value = '';
                 filterDestinations('');
-                showToast('✈️ Welcome back!');
+                closeAllModals();
+                showToast('✈️ Back to homepage');
             });
 
-            // ----- Init -----
-            filterDestinations('');
-            // Close toast on X
-            toastClose.addEventListener('click', hideToast);
+            // ============================================================
+            //  GLOBAL EVENTS for modal triggers from inside modals
+            // ============================================================
 
-            console.log('✈️ Travel Agency with modals ready!');
+            window.addEventListener('openLoginFromBookings', function() {
+                closeModal('bookings');
+                openModal('login');
+            });
+            window.addEventListener('openLoginFromAdmin', function() {
+                closeModal('admin');
+                openModal('login');
+            });
+
+            // ============================================================
+            //  INIT
+            // ============================================================
+
+            renderNav();
+            filterDestinations('');
+
+            // Pre-fill demo login on first visit if no users exist? Not needed, data is seeded.
+
+            console.log('✈️ Travel Agency — fully functional with real data!');
+            console.log('📦 Data stored in localStorage under key:', STORAGE_KEY);
+            console.log('👤 Demo users: admin@travel.com / admin123  |  demo@travel.com / demo123');
+
         })();
     </script>
 
