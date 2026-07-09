@@ -1757,6 +1757,144 @@
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // --- We will put all our functions here in the next steps ---
+            // =============================================
+    // REGISTER FUNCTION
+    // =============================================
+    async function handleRegister(event) {
+        event.preventDefault();
+
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+
+        if (password.length < 6) {
+            alert('Password must be at least 6 characters!');
+            return;
+        }
+
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    full_name: fullName
+                }
+            }
+        });
+
+        if (error) {
+            alert('Registration failed: ' + error.message);
+        } else {
+            alert('Registration successful! Please log in now!');
+        }
+    }
+
+    // =============================================
+    // LOGIN FUNCTION
+    // =============================================
+    async function handleLogin(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            alert('Login failed: ' + error.message);
+        } else {
+            alert('Login successful! Welcome back!');
+        }
+    }
+
+    // =============================================
+    // LOAD DESTINATIONS FUNCTION
+    // =============================================
+    async function loadDestinations(searchTerm = '') {
+        const container = document.getElementById('destinationContainer');
+        container.innerHTML = '<p>Loading destinations...</p>';
+
+        let query = supabase.from('destinations').select('*');
+        
+        if (searchTerm) {
+            query = query.or(`name.ilike.%${searchTerm}%,country.ilike.%${searchTerm}%`);
+        }
+
+        const { data: destinations, error } = await query;
+
+        if (error) {
+            container.innerHTML = '<p>Failed to load destinations.</p>';
+            console.error(error);
+            return;
+        }
+
+        if (destinations.length === 0) {
+            container.innerHTML = '<p>No destinations found matching your search.</p>';
+            return;
+        }
+
+        container.innerHTML = destinations.map(dest => `
+            <div class="destination-card" style="border:1px solid #ddd; padding:15px; border-radius:10px; text-align:center; margin:10px;">
+                <img src="${dest.image_url || 'https://via.placeholder.com/300x200'}" alt="${dest.name}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                <h3>🏝️ ${dest.name}</h3>
+                <p>${dest.country}</p>
+                <p><strong>$${dest.price} / person</strong></p>
+                <button onclick="bookDestination(${dest.id}, ${dest.price})" class="book-btn" style="background:#007bff; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">
+                    Book Now
+                </button>
+            </div>
+        `).join('');
+    }
+
+    // =============================================
+    // SEARCH FUNCTION
+    // =============================================
+    async function handleSearch() {
+        const searchInput = document.getElementById('searchInput');
+        const term = searchInput.value;
+        await loadDestinations(term);
+    }
+
+    // =============================================
+    // BOOK DESTINATION FUNCTION
+    // =============================================
+    async function bookDestination(destId, price) {
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+            alert('Please log in first to book a destination!');
+            return;
+        }
+
+        if (!confirm(`Book this trip for $${price}?`)) return;
+
+        const { data, error } = await supabase
+            .from('bookings')
+            .insert([
+                { 
+                    user_id: user.id, 
+                    destination_id: destId, 
+                    total_price: price,
+                    status: 'pending' 
+                }
+            ]);
+
+        if (error) {
+            alert('Booking failed: ' + error.message);
+        } else {
+            alert('Booking confirmed! Check your dashboard.');
+        }
+    }
+
+    // =============================================
+    // LOAD DESTINATIONS WHEN PAGE OPENS
+    // =============================================
+    window.onload = function() {
+        loadDestinations();
+    };
 </script>
 </body>
 </html>
