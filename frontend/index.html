@@ -1895,6 +1895,28 @@
     window.onload = function() {
         loadDestinations();
     };
+        async function handleLogin(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('loginEmail').value;   // Adjust ID
+    const password = document.getElementById('loginPassword').value; // Adjust ID
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        alert('Login failed: ' + error.message);
+    } else {
+        alert('Login successful! Welcome back!');
+        // Save session state (e.g., hide login/register buttons, show logout button)
+        updateUIForLoggedInUser(data.user);
+        
+        // Redirect to Home or Dashboard
+        // window.location.href = '#home';
+    }
+}
 </script>
 </body>
 </html>
